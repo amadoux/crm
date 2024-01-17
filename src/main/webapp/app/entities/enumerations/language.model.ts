@@ -1,0 +1,17 @@
+export enum Language {
+  FRENCH = 'FRENCH',
+
+  ENGLISH = 'ENGLISH',
+
+  SPANISH = 'SPANISH',
+
+  ITALY = 'ITALY',
+
+  BELGIUM = 'BELGIUM',
+
+  ALLEMAGNE = 'ALLEMAGNE',
+
+  CANADA = 'CANADA',
+
+  CAMEROUNAIS = 'CAMEROUNAIS',
+}
