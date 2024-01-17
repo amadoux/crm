@@ -1,0 +1,147 @@
+{
+  "annotations": {
+    "changelogDate": "20240117100514"
+  },
+  "applications": "*",
+  "documentation": "The Employee entity.",
+  "entityTableName": "employee",
+  "fields": [
+    {
+      "fieldName": "firstName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "lastName",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "email",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "phoneNumber",
+      "fieldType": "String",
+      "fieldValidateRules": ["required"]
+    },
+    {
+      "fieldName": "hireDate",
+      "fieldType": "Instant"
+    },
+    {
+      "fieldName": "salary",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "commissionPct",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "address",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "socialSecurityNumber",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "birthDate",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "nationality",
+      "fieldType": "Language",
+      "fieldValues": "FRENCH,ENGLISH,SPANISH,ITALY,BELGIUM,ALLEMAGNE,CANADA,CAMEROUNAIS"
+    },
+    {
+      "fieldName": "uploadIdentityCard",
+      "fieldType": "byte[]",
+      "fieldTypeBlobContent": "image",
+      "fieldValidateRules": ["minbytes", "maxbytes"],
+      "fieldValidateRulesMaxbytes": "1000",
+      "fieldValidateRulesMinbytes": "3"
+    },
+    {
+      "fieldName": "birthPlace",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "entryDate",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "releaseDate",
+      "fieldType": "ZonedDateTime"
+    },
+    {
+      "fieldName": "cityAgency",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "residenceCity",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "workstation",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "descriptionWorkstation",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "level",
+      "fieldType": "Level",
+      "fieldValues": "A,B,C,D,E,F"
+    },
+    {
+      "fieldName": "coefficient",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "employedManager",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "numberHours",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "averageHourlyCost",
+      "fieldType": "String"
+    },
+    {
+      "fieldName": "monthlyGrossAmount",
+      "fieldType": "Long"
+    },
+    {
+      "fieldName": "commissionAmount",
+      "fieldType": "Long"
+    }
+  ],
+  "name": "Employee",
+  "pagination": "infinite-scroll",
+  "relationships": [
+    {
+      "otherEntityName": "job",
+      "otherEntityRelationshipName": "employee",
+      "relationshipName": "job",
+      "relationshipSide": "left",
+      "relationshipType": "one-to-many"
+    },
+    {
+      "otherEntityName": "employee",
+      "relationshipName": "manager",
+      "relationshipSide": "left",
+      "relationshipType": "many-to-one"
+    },
+    {
+      "documentation": "Another side of the same relationship",
+      "otherEntityName": "department",
+      "relationshipName": "department",
+      "relationshipSide": "right",
+      "relationshipType": "many-to-one"
+    }
+  ],
+  "searchEngine": "no"
+}
