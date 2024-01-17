@@ -1,0 +1,187 @@
+
+entity Employed {
+    /** fieldName */
+    identityCard String required
+    dateInspiration String
+    nationality Country
+    uploadIdentityCard ImageBlob minbytes(3) maxbytes(1000)
+    /** Information administrative **/
+    companyName String
+    typeEmployed TypeEmployed
+    marketers Marketers
+    cityAgency String
+    firstName String
+    lastName String
+    residenceCity String
+    email String required
+    phoneNumber String required
+    address String
+    socialSecurityNumber String
+    birthDate ZonedDateTime
+    birthPlace String
+    entryDate ZonedDateTime
+    releaseDate ZonedDateTime
+    /** information sur le post ****/
+    workstation String
+    descriptionWorkstation String
+    level Level
+    coefficient Long
+    employedManager String
+    numberHours String
+    averageHourlyCost String
+    monthlyGrossAmount Long
+    commissionAmount Long
+    contractType ContractType
+    salaryType SalaryType
+}
+/********Enterprise*****************************/
+entity Enterprise {
+    /** fieldName */
+
+    companyName String required
+    businessRegisterNumber String required
+    uniqueIdentificationNumber String required
+    businessDomicile String
+    businessEmail String unique maxlength(255) required
+    businessPhone String required
+    country Country
+    city String
+    manager String
+    businessLogo ImageBlob minbytes(3) maxbytes(1000)
+    mapLocator ImageBlob minbytes(3) maxbytes(1000)
+}
+/*****Ajouter un contrat *******/
+enum StatusContract {
+    ENCOURS, RUPTURE_CONVENTIONNELLE, LICENCIEMENT_ABUSIVE, LICENCIEMENT_ECONOMIQUE, FIN_CONTRAT
+}
+/**
+ * The Contrat.
+ * Ajouter un contrat
+ */
+entity Contract {
+    /** fieldName */
+
+
+    fullName String required
+    contractType ContractType
+    entryDate ZonedDateTime
+    releaseDate ZonedDateTime
+    statusContract StatusContract
+    uploadContract Blob minbytes(3) maxbytes(1000) required
+}
+/*****Ajouter bulletin de paie *******/
+/**
+ * The Enter the entity name entity.
+ * @author A true hipster
+ */
+entity PaySlip {
+    /** fieldName */
+
+    fullName  String
+    netSalaryPay BigDecimal
+    paySlipDate ZonedDateTime
+    uploadPaySlip ImageBlob minbytes(3) maxbytes(1000)
+
+}
+
+/*** ajouter une absence ****/
+entity Absence {
+
+    fullName String required
+    startDate ZonedDateTime
+    endDate ZonedDateTime
+    numberDayAbsence Long
+    typeAbsence TypeAbsence
+    confirmationAbsence ConfirmationAbsence
+    congeRestant Long
+
+}
+/** Ajouter les charges sociales **/
+
+entity SocialCharges {
+    companyName String required
+    spentDate String
+    spentType SPentType
+    statusCharges StatusCharges
+    amount BigDecimal required
+    purchaseManager String
+    commentText TextBlob minbytes(3) maxbytes(5000) required
+
+}
+enum SPentType {
+    MATERIAL,ADMINISTRATIVE, RENT, TELECOMMUNICATIONS_FEES, SERVICES,SHIFT,COMMUNICATION, MARKETING,OTHERS
+}
+enum StatusCharges {
+    IN_PROGRESS,ACCEPTED,REJECTED
+}
+enum TypeAbsence {
+    RTT, CONGES_PAYES,CONGES_SANS_SOLDE, CONGE_MATERNITE, ABSENCE_INJUSTIFIE,FORMATION,ACCIDENT_TRAVAIL,ABSENCE_EXCEPTIONNELLE,CONGES_PARTENITE,CHOMAGE_PARTIEL,RECUPERATION,ARRET_MALADIE,ABSENCE_JUSTIFIE
+}
+enum ConfirmationAbsence {
+    ENCOURS, REJETE, ACCEPTE
+}
+enum Country {
+    FRANCE, CAMEROON, CANADA, ITALY, GERMAN, BELGIUM
+}
+enum TypeEmployed {
+    MARKETER, SALARY, CONSULTANT
+}
+enum Marketers {
+    STUDENT, PARTICULAR, COMMERCIAL, AMBASSADOR, UNEMPLOYED
+}
+enum Level {
+    A, B, C, D, E
+}
+enum ContractType {
+    CDD, CDI,INTERN, APPRENTICE, COMMERCIAL_AGENT, EXTERNAL
+}
+enum SalaryType {
+    EXECUTIVE_SALARIED, ASSOCIATE, NON_EXECUTIVE_SALARIED
+}
+relationship OneToOne {
+
+    Employed{paySlip} to PaySlip {employed(email)}
+
+}
+relationship OneToOne{
+    Employed to Contract{employed(email)}
+
+}
+
+relationship ManyToMany {
+    Absence{empleyed(email)} to Employed{absence}
+
+
+}
+relationship ManyToOne {
+
+
+    Employed{socialCharges} to SocialCharges{empleyed(email)}
+}
+
+relationship OneToMany {
+
+    Enterprise {employed (manager)} to Employed {enterprise}
+
+}
+relationship ManyToOne {
+    Employed{manager} to Employed
+}
+relationship OneToMany {
+    Employed {enterprise(CompagnyName)} to Enterprise {employed}
+
+}
+
+
+// Set pagination options
+paginate Enterprise, Employed with infinite-scroll
+paginate * with pagination
+
+// Use Data Transfer Objects (DTO)
+// dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl except Employed, Enterprise
+
+// Set an angular suffix
+// angularSuffix * with mySuffix
