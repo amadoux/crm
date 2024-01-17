@@ -1,0 +1,119 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (employee) {
+      <div>
+        <h2 data-cy="employeeDetailsHeading"><span jhiTranslate="crmApp.employee.detail.title">Employee</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ employee.id }}</span>
+          </dd>
+          <dt>
+            <span jhiTranslate="crmApp.employee.firstName" [ngbTooltip]="'crmApp.employee.help.firstName' | translate">First Name</span>
+          </dt>
+          <dd>
+            <span>{{ employee.firstName }}</span>
+          </dd>
+          <dt><span jhiTranslate="crmApp.employee.lastName">Last Name</span></dt>
+          <dd>
+            <span>{{ employee.lastName }}</span>
+          </dd>
+          <dt><span jhiTranslate="crmApp.employee.email">Email</span></dt>
+          <dd>
+            <span>{{ employee.email }}</span>
+          </dd>
+          <dt><span jhiTranslate="crmApp.employee.phoneNumber">Phone Number</span></dt>
+          <dd>
+            <span>{{ employee.phoneNumber }}</span>
+          </dd>
+          <dt><span jhiTranslate="crmApp.employee.hireDate">Hire Date</span></dt>
+          <dd>
+            <span>{{ employee.hireDate | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="crmApp.employee.salary">Salary</span></dt>
+          <dd>
+            <span>{{ employee.salary }}</span>
+          </dd>
+          <dt><span jhiTranslate="crmApp.employee.commissionPct">Commission Pct</span></dt>
+          <dd>
+            <span>{{ employee.commissionPct }}</span>
+          </dd>
+          <dt><span jhiTranslate="crmApp.employee.address">Address</span></dt>
+          <dd>
+            <span>{{ employee.address }}</span>
+          </dd>
+          <dt><span jhiTranslate="crmApp.employee.socialSecurityNumber">Social Security Number</span></dt>
+          <dd>
+            <span>{{ employee.socialSecurityNumber }}</span>
+          </dd>
+          <dt><span jhiTranslate="crmApp.employee.birthDate">Birth Date</span></dt>
+          <dd>
+            <span>{{ employee.birthDate | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="crmApp.employee.nationality">Nationality</span></dt>
+          <dd>
+            <span jhiTranslate="{{ 'crmApp.Language.' + employee.nationality }}">{{ employee.nationality }}</span>
+          </dd>
+          <dt><span jhiTranslate="crmApp.employee.uploadIdentityCard">Upload Identity Card</span></dt>
+          <dd>
+            @if (employee.uploadIdentityCard) {
+              <div>
+                <a (click)="openFile(employee.uploadIdentityCard, employee.uploadIdentityCardContentType)">
+                  <img
+                    [src]="'data:' + employee.uploadIdentityCardContentType + ';base64,' + employee.uploadIdentityCard"
+                    style="max-width: 100%"
+                    alt="employee image"
+                  />
+                </a>
+                {{ employee.uploadIdentityCardContentType }}, {{ byteSize(employee.uploadIdentityCard) }}
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="crmApp.employee.birthPlace">Birth Place</span></dt>
+          <dd>
+            <span>{{ employee.birthPlace }}</span>
+          </dd>
+          <dt><span jhiTranslate="crmApp.employee.entryDate">Entry Date</span></dt>
+          <dd>
+            <span>{{ employee.entryDate | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="crmApp.employee.releaseDate">Release Date</span></dt>
+          <dd>
+            <span>{{ employee.releaseDate | formatMediumDatetime }}</span>
+          </dd>
+          <dt><span jhiTranslate="crmApp.employee.manager">Manager</span></dt>
+          <dd>
+            @if (employee.manager) {
+              <div>
+                <a [routerLink]="['/employee', employee.manager.id, 'view']">{{ employee.manager.id }}</a>
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="crmApp.employee.department">Department</span></dt>
+          <dd>
+            @if (employee.department) {
+              <div>
+                <a [routerLink]="['/department', employee.department.id, 'view']">{{ employee.department.id }}</a>
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/employee', employee.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>
