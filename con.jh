@@ -1,0 +1,175 @@
+/*********Employed Ressources humaines***************/
+/**
+ * The Entity entity.
+ * @author A true hipster
+ */
+entity Employed {
+    /** fieldName */
+    @AutoGenerate(true) @Id idEmployed String
+     identityCard String required
+     dateInspiration String
+     nationality Country
+     uploadIdentityCard Blob minbytes(3) maxbytes(1000)
+     /** Information administrative */
+     compagnyName String
+     typeEmployed TypeEmployed
+     marketers Marketers
+     cityAgence String
+     firstName String
+     lastName String 
+     residenceCity String
+     email String required
+     phoneNumber String required
+     address String
+     socialSecurityNumber String
+     birthDate ZonedDateTime
+     birthPlace String
+     entryDate ZonedDateTime
+     realeseDate ZonedDateTime
+     /** information sur le poste ****/
+     poste String
+     descriptionPoste String 
+     level Level
+     coefficient Long
+     employedManager String
+     numberHours String
+     averageHorlyCost String 
+     monthlyGrossAmount BigDecimal
+     commissionAmount BigDecimal
+     contractType ContractType
+     salaryType SalaryType
+}
+enum TypeEmployed {
+    MAKERTER, SALARY, CONSULTANT
+}
+enum Marketers {
+    STUDENT, PARTICULAR, COMMERCIAL, AMBASSADOR, UNEMPLOYED
+}
+enum Level {
+    A, B, C, D, E
+}
+enum ContractType {
+    CDD, CDI, STAGIAIRE, APPRENTI, COMMERCIAL_AGENT, EXTERNE
+}
+enum SalaryType {
+    EXECUTIVE_SALARIED, ASSOCIATE, NON_EXECUTIVE_SALARIED
+}
+/*****Ajouter un contrat *******/
+enum StatusContract {
+    ENCOURS, RUPTURE_CONVENTIONNELLE, LICENCIEMENT_ABUSIVE, LICENCIEMENT_ECONOMIQUE, FIN_CONTRAT
+}
+/**
+ * The Contrat.
+ * Ajouter un contrat 
+ */
+entity Contract {
+    /** fieldName */
+   
+    @AutoGenerate(true) @Id idContract String
+     fullName String required
+     contractType ContractType
+     entryDate ZonedDateTime
+     realeseDate ZonedDateTime
+     statusContract StatusContract
+     uploadContract Blob minbytes(3) maxbytes(1000) required
+}
+/*****Ajouter une absence *******/
+entity Absence {
+    @AutoGenerate(true) @Id idAbsence String
+    fullName String required
+    startDate ZonedDateTime
+    endDate ZonedDateTime
+    numberDayAbsence Long
+    typeAbsence TypeAbsence
+    confirmationAbsence ConfirmationAbsence
+    congeRestant Long
+    
+}
+enum TypeAbsence {
+    RTT, CONGES_PAYES,CONGES_SANS_SOLDE, CONGE_MATERNITE, ABSENCE_INJUSTIFIE,FORMATION,ACCIDENT_TRAVAIL,ABSENCE_EXCEPTIONNELLE,CONGES_PARTENITE,CHOMAGE_PARTIEL,RECUPERATION,ARRET_MALADIE,ABSENCE_JUSTIFIE
+}
+enum ConfirmationAbsence {
+    ENCOURS, REJETE, ACCEPTE
+}
+
+/*****Ajouter bulletin de paie *******/
+/**
+ * The Enter the entity name entity.
+ * @author A true hipster
+ */
+entity PaySlip {
+    /** fieldName */
+   @AutoGenerate(true) @Id idPaySlip String
+    fullName  String
+    netSalaryPay BigDecimal
+    paySlipDate ZonedDateTime
+    uploadPaySlip ImageBlob minbytes(3) maxbytes(1000)
+
+}
+ entity SocialCharges {
+      compagnyName String required
+      spentDate String 
+      spentType SPentType
+      statusCharges StatusCharhes
+      amount BigDecimal required
+      purchaseManager String
+      commentText TextBlob minbytes(3) maxbytes(5000) required
+      uploadFacture ImageBlob minbytes(3) maxbytes(1000)
+
+
+
+ }
+ enum SPentType {
+    MATERIAL,ADMINISTRATIVE, RENT, TELECOMMUNICATIONS FEES, SERVICES,SHIFT,COMMUNICATION, MARKETING,OTHERS
+ }
+ enum StatusCharhes {
+    IN_PROGRESS,ACCEPTED,REJECTED
+ }
+ relationship OneToMany {
+    Employed {entreprise(compagnyName)} to Entreprise{employed}
+ }
+relationship ManyToOne {
+    Employed{contract} to Contract{employed(email)}
+    Employed{paySlip} to PaySlip {employed(email)}
+    Employed{socialCharges} to SocialCharges{empleyed(email)} 
+   
+}
+
+relationship ManyToMany {
+    Absence{empleyed(email)} to Employed{absence}
+    Employed{socialCharges} to SocialCharges{empleyed(compagnyName)} 
+
+}
+relationship ManyToOne {
+Employed{manager} to Employed
+}
+
+//***********Entreprise--------------------------------------
+entity Entreprise {
+    /** fieldName */
+    @AutoGenerate(true) @Id idEntreprise String
+     compagnyName String required
+     businessRegisterNumber String required
+     uniqueIdentificationNumber String required
+     businessDomiciliation String
+     businessEmail String required unique maxlength(255) required
+     businessPhone String required
+     country Country
+     city String 
+     manager String
+     businessLogo ImageBlob minbytes(3) maxbytes(1000)
+     mapLocator ImageBlob minbytes(3) maxbytes(1000)
+}
+
+// Set pagination options
+paginate * with infinite-scroll
+paginate Employed with pagination
+
+// Use Data Transfert Objects (DTO)
+// dto * with mapstruct
+
+// Set service options to all except few
+service all with serviceImpl except Employed, Entriprise
+
+// Set an angular suffix
+// angularSuffix * with mySuffix
