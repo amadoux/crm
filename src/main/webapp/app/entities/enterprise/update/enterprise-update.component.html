@@ -1,0 +1,291 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-enterprise-heading" data-cy="EnterpriseCreateUpdateHeading" jhiTranslate="crmApp.enterprise.home.createOrEditLabel">
+        Create or edit a Enterprise
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        <div class="mb-3">
+          <label
+            class="form-label"
+            jhiTranslate="crmApp.enterprise.companyName"
+            for="field_companyName"
+            [ngbTooltip]="'crmApp.enterprise.help.companyName' | translate"
+            >Company Name</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="companyName"
+            id="field_companyName"
+            data-cy="companyName"
+            formControlName="companyName"
+          />
+          @if (editForm.get('companyName')!.invalid && (editForm.get('companyName')!.dirty || editForm.get('companyName')!.touched)) {
+            <div>
+              @if (editForm.get('companyName')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="crmApp.enterprise.businessRegisterNumber" for="field_businessRegisterNumber"
+            >Business Register Number</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="businessRegisterNumber"
+            id="field_businessRegisterNumber"
+            data-cy="businessRegisterNumber"
+            formControlName="businessRegisterNumber"
+          />
+          @if (
+            editForm.get('businessRegisterNumber')!.invalid &&
+            (editForm.get('businessRegisterNumber')!.dirty || editForm.get('businessRegisterNumber')!.touched)
+          ) {
+            <div>
+              @if (editForm.get('businessRegisterNumber')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="crmApp.enterprise.uniqueIdentificationNumber" for="field_uniqueIdentificationNumber"
+            >Unique Identification Number</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="uniqueIdentificationNumber"
+            id="field_uniqueIdentificationNumber"
+            data-cy="uniqueIdentificationNumber"
+            formControlName="uniqueIdentificationNumber"
+          />
+          @if (
+            editForm.get('uniqueIdentificationNumber')!.invalid &&
+            (editForm.get('uniqueIdentificationNumber')!.dirty || editForm.get('uniqueIdentificationNumber')!.touched)
+          ) {
+            <div>
+              @if (editForm.get('uniqueIdentificationNumber')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="crmApp.enterprise.businessDomicile" for="field_businessDomicile">Business Domicile</label>
+          <input
+            type="text"
+            class="form-control"
+            name="businessDomicile"
+            id="field_businessDomicile"
+            data-cy="businessDomicile"
+            formControlName="businessDomicile"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="crmApp.enterprise.businessEmail" for="field_businessEmail">Business Email</label>
+          <input
+            type="text"
+            class="form-control"
+            name="businessEmail"
+            id="field_businessEmail"
+            data-cy="businessEmail"
+            formControlName="businessEmail"
+          />
+          @if (editForm.get('businessEmail')!.invalid && (editForm.get('businessEmail')!.dirty || editForm.get('businessEmail')!.touched)) {
+            <div>
+              @if (editForm.get('businessEmail')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+              @if (editForm.get('businessEmail')?.errors?.pattern) {
+                <small
+                  class="form-text text-danger"
+                  jhiTranslate="entity.validation.pattern"
+                  [translateValues]="{ pattern: 'Business Email' }"
+                  >This field should follow pattern for Business Email.</small
+                >
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="crmApp.enterprise.businessPhone" for="field_businessPhone">Business Phone</label>
+          <input
+            type="text"
+            class="form-control"
+            name="businessPhone"
+            id="field_businessPhone"
+            data-cy="businessPhone"
+            formControlName="businessPhone"
+          />
+          @if (editForm.get('businessPhone')!.invalid && (editForm.get('businessPhone')!.dirty || editForm.get('businessPhone')!.touched)) {
+            <div>
+              @if (editForm.get('businessPhone')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="crmApp.enterprise.country" for="field_country">Country</label>
+          <select class="form-control" name="country" formControlName="country" id="field_country" data-cy="country">
+            <option [ngValue]="null">{{ 'crmApp.Pays.null' | translate }}</option>
+            @for (pays of paysValues; track $index) {
+              <option [value]="pays">{{ 'crmApp.Pays.' + pays | translate }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="crmApp.enterprise.city" for="field_city">City</label>
+          <input type="text" class="form-control" name="city" id="field_city" data-cy="city" formControlName="city" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="crmApp.enterprise.manager" for="field_manager">Manager</label>
+          <input type="text" class="form-control" name="manager" id="field_manager" data-cy="manager" formControlName="manager" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="crmApp.enterprise.businessLogo" for="field_businessLogo">Business Logo</label>
+          <div>
+            @if (editForm.get('businessLogo')!.value) {
+              <div class="form-text text-danger clearfix">
+                <a
+                  class="pull-start"
+                  (click)="openFile(editForm.get('businessLogo')!.value!, editForm.get('businessLogoContentType')!.value!)"
+                  jhiTranslate="entity.action.open"
+                  >Open</a
+                ><br />
+                <span class="pull-start"
+                  >{{ editForm.get('businessLogoContentType')!.value }}, {{ byteSize(editForm.get('businessLogo')!.value!) }}</span
+                >
+                <button
+                  type="button"
+                  (click)="editForm.patchValue({ businessLogo: undefined, businessLogoContentType: undefined })"
+                  class="btn btn-secondary btn-xs pull-end"
+                >
+                  <fa-icon icon="times"></fa-icon>
+                </button>
+              </div>
+            }
+            <input
+              type="file"
+              id="file_businessLogo"
+              data-cy="businessLogo"
+              (change)="setFileData($event, 'businessLogo', false)"
+              jhiTranslate="entity.action.addblob"
+            />
+          </div>
+          <input
+            type="hidden"
+            class="form-control"
+            name="businessLogo"
+            id="field_businessLogo"
+            data-cy="businessLogo"
+            formControlName="businessLogo"
+          />
+          <input
+            type="hidden"
+            class="form-control"
+            name="businessLogoContentType"
+            id="field_businessLogoContentType"
+            formControlName="businessLogoContentType"
+          />
+          @if (editForm.get('businessLogo')!.invalid && (editForm.get('businessLogo')!.dirty || editForm.get('businessLogo')!.touched)) {
+            <div></div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="crmApp.enterprise.mapLocator" for="field_mapLocator">Map Locator</label>
+          <div>
+            @if (editForm.get('mapLocator')!.value) {
+              <img
+                [src]="'data:' + editForm.get('mapLocatorContentType')!.value + ';base64,' + editForm.get('mapLocator')!.value"
+                style="max-height: 100px"
+                alt="enterprise image"
+              />
+            }
+            @if (editForm.get('mapLocator')!.value) {
+              <div class="form-text text-danger clearfix">
+                <span class="pull-start"
+                  >{{ editForm.get('mapLocatorContentType')!.value }}, {{ byteSize(editForm.get('mapLocator')!.value!) }}</span
+                >
+                <button
+                  type="button"
+                  (click)="clearInputImage('mapLocator', 'mapLocatorContentType', 'file_mapLocator')"
+                  class="btn btn-secondary btn-xs pull-end"
+                >
+                  <fa-icon icon="times"></fa-icon>
+                </button>
+              </div>
+            }
+            <input
+              type="file"
+              id="file_mapLocator"
+              data-cy="mapLocator"
+              (change)="setFileData($event, 'mapLocator', true)"
+              accept="image/*"
+              jhiTranslate="entity.action.addimage"
+            />
+          </div>
+          <input
+            type="hidden"
+            class="form-control"
+            name="mapLocator"
+            id="field_mapLocator"
+            data-cy="mapLocator"
+            formControlName="mapLocator"
+          />
+          <input
+            type="hidden"
+            class="form-control"
+            name="mapLocatorContentType"
+            id="field_mapLocatorContentType"
+            formControlName="mapLocatorContentType"
+          />
+          @if (editForm.get('mapLocator')!.invalid && (editForm.get('mapLocator')!.dirty || editForm.get('mapLocator')!.touched)) {
+            <div></div>
+          }
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

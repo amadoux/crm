@@ -1,0 +1,495 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    <form name="editForm" role="form" novalidate (ngSubmit)="save()" [formGroup]="editForm">
+      <h2 id="jhi-employee-heading" data-cy="EmployeeCreateUpdateHeading" jhiTranslate="crmApp.employee.home.createOrEditLabel">
+        Create or edit a Employee
+      </h2>
+
+      <div>
+        <jhi-alert-error></jhi-alert-error>
+
+        @if (editForm.controls.id.value !== null) {
+          <div class="mb-3">
+            <label class="form-label" jhiTranslate="global.field.id" for="field_id">ID</label>
+            <input type="number" class="form-control" name="id" id="field_id" data-cy="id" formControlName="id" [readonly]="true" />
+          </div>
+        }
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="crmApp.employee.firstName" for="field_firstName">First Name</label>
+          <input type="text" class="form-control" name="firstName" id="field_firstName" data-cy="firstName" formControlName="firstName" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="crmApp.employee.lastName" for="field_lastName">Last Name</label>
+          <input type="text" class="form-control" name="lastName" id="field_lastName" data-cy="lastName" formControlName="lastName" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="crmApp.employee.email" for="field_email">Email</label>
+          <input type="text" class="form-control" name="email" id="field_email" data-cy="email" formControlName="email" />
+          @if (editForm.get('email')!.invalid && (editForm.get('email')!.dirty || editForm.get('email')!.touched)) {
+            <div>
+              @if (editForm.get('email')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="crmApp.employee.phoneNumber" for="field_phoneNumber">Phone Number</label>
+          <input
+            type="text"
+            class="form-control"
+            name="phoneNumber"
+            id="field_phoneNumber"
+            data-cy="phoneNumber"
+            formControlName="phoneNumber"
+          />
+          @if (editForm.get('phoneNumber')!.invalid && (editForm.get('phoneNumber')!.dirty || editForm.get('phoneNumber')!.touched)) {
+            <div>
+              @if (editForm.get('phoneNumber')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="crmApp.employee.identityCard" for="field_identityCard">Identity Card</label>
+          <input
+            type="text"
+            class="form-control"
+            name="identityCard"
+            id="field_identityCard"
+            data-cy="identityCard"
+            formControlName="identityCard"
+          />
+          @if (editForm.get('identityCard')!.invalid && (editForm.get('identityCard')!.dirty || editForm.get('identityCard')!.touched)) {
+            <div>
+              @if (editForm.get('identityCard')?.errors?.required) {
+                <small class="form-text text-danger" jhiTranslate="entity.validation.required">This field is required.</small>
+              }
+            </div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="crmApp.employee.dateInspiration" for="field_dateInspiration">Date Inspiration</label>
+          <input
+            type="text"
+            class="form-control"
+            name="dateInspiration"
+            id="field_dateInspiration"
+            data-cy="dateInspiration"
+            formControlName="dateInspiration"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="crmApp.employee.nationality" for="field_nationality">Nationality</label>
+          <select class="form-control" name="nationality" formControlName="nationality" id="field_nationality" data-cy="nationality">
+            <option [ngValue]="null">{{ 'crmApp.Pays.null' | translate }}</option>
+            @for (pays of paysValues; track $index) {
+              <option [value]="pays">{{ 'crmApp.Pays.' + pays | translate }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="crmApp.employee.uploadIdentityCard" for="field_uploadIdentityCard"
+            >Upload Identity Card</label
+          >
+          <div>
+            @if (editForm.get('uploadIdentityCard')!.value) {
+              <div class="form-text text-danger clearfix">
+                <a
+                  class="pull-start"
+                  (click)="openFile(editForm.get('uploadIdentityCard')!.value!, editForm.get('uploadIdentityCardContentType')!.value!)"
+                  jhiTranslate="entity.action.open"
+                  >Open</a
+                ><br />
+                <span class="pull-start"
+                  >{{ editForm.get('uploadIdentityCardContentType')!.value }},
+                  {{ byteSize(editForm.get('uploadIdentityCard')!.value!) }}</span
+                >
+                <button
+                  type="button"
+                  (click)="editForm.patchValue({ uploadIdentityCard: undefined, uploadIdentityCardContentType: undefined })"
+                  class="btn btn-secondary btn-xs pull-end"
+                >
+                  <fa-icon icon="times"></fa-icon>
+                </button>
+              </div>
+            }
+            <input
+              type="file"
+              id="file_uploadIdentityCard"
+              data-cy="uploadIdentityCard"
+              (change)="setFileData($event, 'uploadIdentityCard', false)"
+              jhiTranslate="entity.action.addblob"
+            />
+          </div>
+          <input
+            type="hidden"
+            class="form-control"
+            name="uploadIdentityCard"
+            id="field_uploadIdentityCard"
+            data-cy="uploadIdentityCard"
+            formControlName="uploadIdentityCard"
+          />
+          <input
+            type="hidden"
+            class="form-control"
+            name="uploadIdentityCardContentType"
+            id="field_uploadIdentityCardContentType"
+            formControlName="uploadIdentityCardContentType"
+          />
+          @if (
+            editForm.get('uploadIdentityCard')!.invalid &&
+            (editForm.get('uploadIdentityCard')!.dirty || editForm.get('uploadIdentityCard')!.touched)
+          ) {
+            <div></div>
+          }
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="crmApp.employee.companyName" for="field_companyName">Company Name</label>
+          <input
+            type="text"
+            class="form-control"
+            name="companyName"
+            id="field_companyName"
+            data-cy="companyName"
+            formControlName="companyName"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="crmApp.employee.typeEmployed" for="field_typeEmployed">Type Employed</label>
+          <select class="form-control" name="typeEmployed" formControlName="typeEmployed" id="field_typeEmployed" data-cy="typeEmployed">
+            <option [ngValue]="null">{{ 'crmApp.TypeEmployed.null' | translate }}</option>
+            @for (typeEmployed of typeEmployedValues; track $index) {
+              <option [value]="typeEmployed">{{ 'crmApp.TypeEmployed.' + typeEmployed | translate }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="crmApp.employee.cityAgency" for="field_cityAgency">City Agency</label>
+          <input
+            type="text"
+            class="form-control"
+            name="cityAgency"
+            id="field_cityAgency"
+            data-cy="cityAgency"
+            formControlName="cityAgency"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="crmApp.employee.residenceCity" for="field_residenceCity">Residence City</label>
+          <input
+            type="text"
+            class="form-control"
+            name="residenceCity"
+            id="field_residenceCity"
+            data-cy="residenceCity"
+            formControlName="residenceCity"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="crmApp.employee.address" for="field_address">Address</label>
+          <input type="text" class="form-control" name="address" id="field_address" data-cy="address" formControlName="address" />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="crmApp.employee.socialSecurityNumber" for="field_socialSecurityNumber"
+            >Social Security Number</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="socialSecurityNumber"
+            id="field_socialSecurityNumber"
+            data-cy="socialSecurityNumber"
+            formControlName="socialSecurityNumber"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="crmApp.employee.birthDate" for="field_birthDate">Birth Date</label>
+          <div class="d-flex">
+            <input
+              id="field_birthDate"
+              data-cy="birthDate"
+              type="datetime-local"
+              class="form-control"
+              name="birthDate"
+              formControlName="birthDate"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="crmApp.employee.birthPlace" for="field_birthPlace">Birth Place</label>
+          <input
+            type="text"
+            class="form-control"
+            name="birthPlace"
+            id="field_birthPlace"
+            data-cy="birthPlace"
+            formControlName="birthPlace"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="crmApp.employee.entryDate" for="field_entryDate">Entry Date</label>
+          <div class="d-flex">
+            <input
+              id="field_entryDate"
+              data-cy="entryDate"
+              type="datetime-local"
+              class="form-control"
+              name="entryDate"
+              formControlName="entryDate"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="crmApp.employee.releaseDate" for="field_releaseDate">Release Date</label>
+          <div class="d-flex">
+            <input
+              id="field_releaseDate"
+              data-cy="releaseDate"
+              type="datetime-local"
+              class="form-control"
+              name="releaseDate"
+              formControlName="releaseDate"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="crmApp.employee.workstation" for="field_workstation">Workstation</label>
+          <input
+            type="text"
+            class="form-control"
+            name="workstation"
+            id="field_workstation"
+            data-cy="workstation"
+            formControlName="workstation"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="crmApp.employee.descriptionWorkstation" for="field_descriptionWorkstation"
+            >Description Workstation</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="descriptionWorkstation"
+            id="field_descriptionWorkstation"
+            data-cy="descriptionWorkstation"
+            formControlName="descriptionWorkstation"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="crmApp.employee.level" for="field_level">Level</label>
+          <select class="form-control" name="level" formControlName="level" id="field_level" data-cy="level">
+            <option [ngValue]="null">{{ 'crmApp.Level.null' | translate }}</option>
+            @for (level of levelValues; track $index) {
+              <option [value]="level">{{ 'crmApp.Level.' + level | translate }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="crmApp.employee.coefficient" for="field_coefficient">Coefficient</label>
+          <input
+            type="number"
+            class="form-control"
+            name="coefficient"
+            id="field_coefficient"
+            data-cy="coefficient"
+            formControlName="coefficient"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="crmApp.employee.employedManager" for="field_employedManager">Employed Manager</label>
+          <input
+            type="text"
+            class="form-control"
+            name="employedManager"
+            id="field_employedManager"
+            data-cy="employedManager"
+            formControlName="employedManager"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="crmApp.employee.numberHours" for="field_numberHours">Number Hours</label>
+          <input
+            type="text"
+            class="form-control"
+            name="numberHours"
+            id="field_numberHours"
+            data-cy="numberHours"
+            formControlName="numberHours"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="crmApp.employee.averageHourlyCost" for="field_averageHourlyCost"
+            >Average Hourly Cost</label
+          >
+          <input
+            type="text"
+            class="form-control"
+            name="averageHourlyCost"
+            id="field_averageHourlyCost"
+            data-cy="averageHourlyCost"
+            formControlName="averageHourlyCost"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="crmApp.employee.monthlyGrossAmount" for="field_monthlyGrossAmount"
+            >Monthly Gross Amount</label
+          >
+          <input
+            type="number"
+            class="form-control"
+            name="monthlyGrossAmount"
+            id="field_monthlyGrossAmount"
+            data-cy="monthlyGrossAmount"
+            formControlName="monthlyGrossAmount"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="crmApp.employee.commissionAmount" for="field_commissionAmount">Commission Amount</label>
+          <input
+            type="number"
+            class="form-control"
+            name="commissionAmount"
+            id="field_commissionAmount"
+            data-cy="commissionAmount"
+            formControlName="commissionAmount"
+          />
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="crmApp.employee.contractType" for="field_contractType">Contract Type</label>
+          <select class="form-control" name="contractType" formControlName="contractType" id="field_contractType" data-cy="contractType">
+            <option [ngValue]="null">{{ 'crmApp.ContractType.null' | translate }}</option>
+            @for (contractType of contractTypeValues; track $index) {
+              <option [value]="contractType">{{ 'crmApp.ContractType.' + contractType | translate }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="crmApp.employee.salaryType" for="field_salaryType">Salary Type</label>
+          <select class="form-control" name="salaryType" formControlName="salaryType" id="field_salaryType" data-cy="salaryType">
+            <option [ngValue]="null">{{ 'crmApp.SalaryType.null' | translate }}</option>
+            @for (salaryType of salaryTypeValues; track $index) {
+              <option [value]="salaryType">{{ 'crmApp.SalaryType.' + salaryType | translate }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="crmApp.employee.hireDate" for="field_hireDate">Hire Date</label>
+          <div class="d-flex">
+            <input
+              id="field_hireDate"
+              data-cy="hireDate"
+              type="datetime-local"
+              class="form-control"
+              name="hireDate"
+              formControlName="hireDate"
+              placeholder="YYYY-MM-DD HH:mm"
+            />
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="crmApp.employee.enterprise" for="field_enterprise">Enterprise</label>
+          <select
+            class="form-control"
+            id="field_enterprise"
+            data-cy="enterprise"
+            name="enterprise"
+            formControlName="enterprise"
+            [compareWith]="compareEnterprise"
+          >
+            <option [ngValue]="null"></option>
+            @for (enterpriseOption of enterprisesCollection; track $index) {
+              <option [ngValue]="enterpriseOption">{{ enterpriseOption.compagnyName }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="crmApp.employee.manager" for="field_manager">Manager</label>
+          <select
+            class="form-control"
+            id="field_manager"
+            data-cy="manager"
+            name="manager"
+            formControlName="manager"
+            [compareWith]="compareEmployee"
+          >
+            <option [ngValue]="null"></option>
+            @for (employeeOption of employeesSharedCollection; track $index) {
+              <option [ngValue]="employeeOption">{{ employeeOption.email }}</option>
+            }
+          </select>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label" jhiTranslate="crmApp.employee.department" for="field_department">Department</label>
+          <select
+            class="form-control"
+            id="field_department"
+            data-cy="department"
+            name="department"
+            formControlName="department"
+            [compareWith]="compareDepartment"
+          >
+            <option [ngValue]="null"></option>
+            @for (departmentOption of departmentsSharedCollection; track $index) {
+              <option [ngValue]="departmentOption">{{ departmentOption.id }}</option>
+            }
+          </select>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="cancel-save" data-cy="entityCreateCancelButton" class="btn btn-secondary" (click)="previousState()">
+          <fa-icon icon="ban"></fa-icon>&nbsp;<span jhiTranslate="entity.action.cancel">Cancel</span>
+        </button>
+
+        <button
+          type="submit"
+          id="save-entity"
+          data-cy="entityCreateSaveButton"
+          [disabled]="editForm.invalid || isSaving"
+          class="btn btn-primary"
+        >
+          <fa-icon icon="save"></fa-icon>&nbsp;<span jhiTranslate="entity.action.save">Save</span>
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
