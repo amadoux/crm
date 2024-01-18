@@ -1,0 +1,96 @@
+<div class="d-flex justify-content-center">
+  <div class="col-8">
+    @if (enterprise) {
+      <div>
+        <h2 data-cy="enterpriseDetailsHeading"><span jhiTranslate="crmApp.enterprise.detail.title">Enterprise</span></h2>
+
+        <hr />
+
+        <jhi-alert-error></jhi-alert-error>
+
+        <jhi-alert></jhi-alert>
+
+        <dl class="row-md jh-entity-details">
+          <dt><span jhiTranslate="global.field.id">ID</span></dt>
+          <dd>
+            <span>{{ enterprise.id }}</span>
+          </dd>
+          <dt>
+            <span jhiTranslate="crmApp.enterprise.companyName" [ngbTooltip]="'crmApp.enterprise.help.companyName' | translate"
+              >Company Name</span
+            >
+          </dt>
+          <dd>
+            <span>{{ enterprise.companyName }}</span>
+          </dd>
+          <dt><span jhiTranslate="crmApp.enterprise.businessRegisterNumber">Business Register Number</span></dt>
+          <dd>
+            <span>{{ enterprise.businessRegisterNumber }}</span>
+          </dd>
+          <dt><span jhiTranslate="crmApp.enterprise.uniqueIdentificationNumber">Unique Identification Number</span></dt>
+          <dd>
+            <span>{{ enterprise.uniqueIdentificationNumber }}</span>
+          </dd>
+          <dt><span jhiTranslate="crmApp.enterprise.businessDomicile">Business Domicile</span></dt>
+          <dd>
+            <span>{{ enterprise.businessDomicile }}</span>
+          </dd>
+          <dt><span jhiTranslate="crmApp.enterprise.businessEmail">Business Email</span></dt>
+          <dd>
+            <span>{{ enterprise.businessEmail }}</span>
+          </dd>
+          <dt><span jhiTranslate="crmApp.enterprise.businessPhone">Business Phone</span></dt>
+          <dd>
+            <span>{{ enterprise.businessPhone }}</span>
+          </dd>
+          <dt><span jhiTranslate="crmApp.enterprise.country">Country</span></dt>
+          <dd>
+            <span jhiTranslate="{{ 'crmApp.Pays.' + enterprise.country }}">{{ enterprise.country }}</span>
+          </dd>
+          <dt><span jhiTranslate="crmApp.enterprise.city">City</span></dt>
+          <dd>
+            <span>{{ enterprise.city }}</span>
+          </dd>
+          <dt><span jhiTranslate="crmApp.enterprise.manager">Manager</span></dt>
+          <dd>
+            <span>{{ enterprise.manager }}</span>
+          </dd>
+          <dt><span jhiTranslate="crmApp.enterprise.businessLogo">Business Logo</span></dt>
+          <dd>
+            @if (enterprise.businessLogo) {
+              <div>
+                <a (click)="openFile(enterprise.businessLogo, enterprise.businessLogoContentType)" jhiTranslate="entity.action.open"
+                  >Open</a
+                >
+                {{ enterprise.businessLogoContentType }}, {{ byteSize(enterprise.businessLogo) }}
+              </div>
+            }
+          </dd>
+          <dt><span jhiTranslate="crmApp.enterprise.mapLocator">Map Locator</span></dt>
+          <dd>
+            @if (enterprise.mapLocator) {
+              <div>
+                <a (click)="openFile(enterprise.mapLocator, enterprise.mapLocatorContentType)">
+                  <img
+                    [src]="'data:' + enterprise.mapLocatorContentType + ';base64,' + enterprise.mapLocator"
+                    style="max-width: 100%"
+                    alt="enterprise image"
+                  />
+                </a>
+                {{ enterprise.mapLocatorContentType }}, {{ byteSize(enterprise.mapLocator) }}
+              </div>
+            }
+          </dd>
+        </dl>
+
+        <button type="submit" (click)="previousState()" class="btn btn-info" data-cy="entityDetailsBackButton">
+          <fa-icon icon="arrow-left"></fa-icon>&nbsp;<span jhiTranslate="entity.action.back">Back</span>
+        </button>
+
+        <button type="button" [routerLink]="['/enterprise', enterprise.id, 'edit']" class="btn btn-primary">
+          <fa-icon icon="pencil-alt"></fa-icon>&nbsp;<span jhiTranslate="entity.action.edit">Edit</span>
+        </button>
+      </div>
+    }
+  </div>
+</div>
