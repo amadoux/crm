@@ -1,0 +1,52 @@
+import dayjs from 'dayjs/esm';
+import { IEnterprise } from 'app/entities/enterprise/enterprise.model';
+import { IJob } from 'app/entities/job/job.model';
+import { IDepartment } from 'app/entities/department/department.model';
+import { IJobHistory } from 'app/entities/job-history/job-history.model';
+import { Pays } from 'app/entities/enumerations/pays.model';
+import { TypeEmployed } from 'app/entities/enumerations/type-employed.model';
+import { Level } from 'app/entities/enumerations/level.model';
+import { ContractType } from 'app/entities/enumerations/contract-type.model';
+import { SalaryType } from 'app/entities/enumerations/salary-type.model';
+
+export interface IEmployee {
+  id: number;
+  firstName?: string | null;
+  lastName?: string | null;
+  email?: string | null;
+  phoneNumber?: string | null;
+  identityCard?: string | null;
+  dateInspiration?: string | null;
+  nationality?: keyof typeof Pays | null;
+  uploadIdentityCard?: string | null;
+  uploadIdentityCardContentType?: string | null;
+  companyName?: string | null;
+  typeEmployed?: keyof typeof TypeEmployed | null;
+  cityAgency?: string | null;
+  residenceCity?: string | null;
+  address?: string | null;
+  socialSecurityNumber?: string | null;
+  birthDate?: dayjs.Dayjs | null;
+  birthPlace?: string | null;
+  entryDate?: dayjs.Dayjs | null;
+  releaseDate?: dayjs.Dayjs | null;
+  workstation?: string | null;
+  descriptionWorkstation?: string | null;
+  level?: keyof typeof Level | null;
+  coefficient?: number | null;
+  employedManager?: string | null;
+  numberHours?: string | null;
+  averageHourlyCost?: string | null;
+  monthlyGrossAmount?: number | null;
+  commissionAmount?: number | null;
+  contractType?: keyof typeof ContractType | null;
+  salaryType?: keyof typeof SalaryType | null;
+  hireDate?: dayjs.Dayjs | null;
+  enterprise?: IEnterprise | null;
+  jobs?: IJob[] | null;
+  manager?: IEmployee | null;
+  department?: IDepartment | null;
+  jobHistory?: IJobHistory | null;
+}
+
+export type NewEmployee = Omit<IEmployee, 'id'> & { id: null };

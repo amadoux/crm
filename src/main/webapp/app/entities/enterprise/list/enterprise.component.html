@@ -1,0 +1,184 @@
+<div>
+  <h2 id="page-heading" data-cy="EnterpriseHeading">
+    <span jhiTranslate="crmApp.enterprise.home.title">Enterprises</span>
+
+    <div class="d-flex justify-content-end">
+      <button class="btn btn-info me-2" (click)="load()" [disabled]="isLoading">
+        <fa-icon icon="sync" [spin]="isLoading"></fa-icon>
+        <span jhiTranslate="crmApp.enterprise.home.refreshListLabel">Refresh list</span>
+      </button>
+
+      <button
+        id="jh-create-entity"
+        data-cy="entityCreateButton"
+        class="btn btn-primary jh-create-entity create-enterprise"
+        [routerLink]="['/enterprise/new']"
+      >
+        <fa-icon icon="plus"></fa-icon>
+        <span jhiTranslate="crmApp.enterprise.home.createLabel">Create a new Enterprise</span>
+      </button>
+    </div>
+  </h2>
+
+  <jhi-alert-error></jhi-alert-error>
+
+  <jhi-alert></jhi-alert>
+
+  @if (enterprises?.length === 0) {
+    <div class="alert alert-warning" id="no-result">
+      <span jhiTranslate="crmApp.enterprise.home.notFound">No Enterprises found</span>
+    </div>
+  }
+
+  @if (enterprises && enterprises.length > 0) {
+    <div class="table-responsive table-entities" id="entities">
+      <table class="table table-striped" aria-describedby="page-heading">
+        <thead>
+          <tr jhiSort [(predicate)]="predicate" [(ascending)]="ascending" (sortChange)="navigateToWithComponentValues()">
+            <th scope="col" jhiSortBy="id">
+              <div class="d-flex">
+                <span jhiTranslate="global.field.id">ID</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="companyName">
+              <div class="d-flex">
+                <span jhiTranslate="crmApp.enterprise.companyName">Company Name</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="businessRegisterNumber">
+              <div class="d-flex">
+                <span jhiTranslate="crmApp.enterprise.businessRegisterNumber">Business Register Number</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="uniqueIdentificationNumber">
+              <div class="d-flex">
+                <span jhiTranslate="crmApp.enterprise.uniqueIdentificationNumber">Unique Identification Number</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="businessDomicile">
+              <div class="d-flex">
+                <span jhiTranslate="crmApp.enterprise.businessDomicile">Business Domicile</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="businessEmail">
+              <div class="d-flex">
+                <span jhiTranslate="crmApp.enterprise.businessEmail">Business Email</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="businessPhone">
+              <div class="d-flex">
+                <span jhiTranslate="crmApp.enterprise.businessPhone">Business Phone</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="country">
+              <div class="d-flex">
+                <span jhiTranslate="crmApp.enterprise.country">Country</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="city">
+              <div class="d-flex">
+                <span jhiTranslate="crmApp.enterprise.city">City</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="manager">
+              <div class="d-flex">
+                <span jhiTranslate="crmApp.enterprise.manager">Manager</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="businessLogo">
+              <div class="d-flex">
+                <span jhiTranslate="crmApp.enterprise.businessLogo">Business Logo</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col" jhiSortBy="mapLocator">
+              <div class="d-flex">
+                <span jhiTranslate="crmApp.enterprise.mapLocator">Map Locator</span>
+
+                <fa-icon class="p-1" icon="sort"></fa-icon>
+              </div>
+            </th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (enterprise of enterprises; track trackId) {
+            <tr data-cy="entityTable">
+              <td>
+                <a [routerLink]="['/enterprise', enterprise.id, 'view']">{{ enterprise.id }}</a>
+              </td>
+              <td>{{ enterprise.companyName }}</td>
+              <td>{{ enterprise.businessRegisterNumber }}</td>
+              <td>{{ enterprise.uniqueIdentificationNumber }}</td>
+              <td>{{ enterprise.businessDomicile }}</td>
+              <td>{{ enterprise.businessEmail }}</td>
+              <td>{{ enterprise.businessPhone }}</td>
+              <td jhiTranslate="{{ 'crmApp.Pays.' + enterprise.country }}">{{ enterprise.country }}</td>
+              <td>{{ enterprise.city }}</td>
+              <td>{{ enterprise.manager }}</td>
+              <td>
+                @if (enterprise.businessLogo) {
+                  <a (click)="openFile(enterprise.businessLogo, enterprise.businessLogoContentType)" jhiTranslate="entity.action.open"
+                    >Open</a
+                  >
+                  <span>{{ enterprise.businessLogoContentType }}, {{ byteSize(enterprise.businessLogo) }}</span>
+                }
+              </td>
+              <td>
+                @if (enterprise.mapLocator) {
+                  <a (click)="openFile(enterprise.mapLocator, enterprise.mapLocatorContentType)">
+                    <img
+                      [src]="'data:' + enterprise.mapLocatorContentType + ';base64,' + enterprise.mapLocator"
+                      style="max-height: 30px"
+                      alt="enterprise image"
+                    />
+                  </a>
+                  <span>{{ enterprise.mapLocatorContentType }}, {{ byteSize(enterprise.mapLocator) }}</span>
+                }
+              </td>
+              <td class="text-end">
+                <div class="btn-group">
+                  <a [routerLink]="['/enterprise', enterprise.id, 'view']" class="btn btn-info btn-sm" data-cy="entityDetailsButton">
+                    <fa-icon icon="eye"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.view">View</span>
+                  </a>
+
+                  <a [routerLink]="['/enterprise', enterprise.id, 'edit']" class="btn btn-primary btn-sm" data-cy="entityEditButton">
+                    <fa-icon icon="pencil-alt"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.edit">Edit</span>
+                  </a>
+
+                  <button type="submit" (click)="delete(enterprise)" class="btn btn-danger btn-sm" data-cy="entityDeleteButton">
+                    <fa-icon icon="times"></fa-icon>
+                    <span class="d-none d-md-inline" jhiTranslate="entity.action.delete">Delete</span>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>
